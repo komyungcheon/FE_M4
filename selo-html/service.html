@@ -186,23 +186,19 @@
 </html>
 
 <script>
-   let API_URL = 'http://localhost:3000/trades';
-   load()
+   let API_URL = 'http://localhost:3000/cars';
+   load();
 
    function load() {
       axios.get(API_URL).then((res) => {
          let data = res.data;
-         console.log(res.data)
-         let str = `<button class="btn btn-outline-primary mt-5" onclick=\'showFromAdd()\'>Thêm mới sản phẩm</button>`;
+         let str = `<button class="btn btn-outline-primary mt-5" onclick='showFromAdd()'>Thêm mới ô tô</button>`;
          str += `<table class="table table-hover table-striped align-middle text-center" style="font-size: 18px ; font-family: Poppins, sans-serif; margin-top: 50px "
                     <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Khoản Thu Chi</th>
-                    <th>Chi khoản gì</th>
-                    <th>Tổng tiền</th>
+                    <th>Giá</th>
+                    <th>Mô tả</th>
                     <th>Lựa chọn</th>
                  </tr>`
          data.map(item => {
@@ -210,13 +206,9 @@
                      <tr>
                     <td>${item.id}</td>
                     <td><a class="text-decoration-none" href="">${item.name}</a></td>
-                    <td>${item.amount}</td>
-                    <td>${item.date}</td>
-                    <td>${item.type}</td>
-                    <td>${item.tradeType.name}</td>
-                    <td>${item.user.currentMoney} VNĐ</td>
+                    <td>${item.price}</td>
+                    <td>${item.mota} VNĐ</td>
                    <td><div class="d-flex justify-content-around ">
-<!--                                  <button onclick="showFromAdd()" class="btn btn-primary me-1"><i class="fa-sharp fa-solid fa-circle-plus"></i></button>-->
                                  <button onclick="showFromEdit(${item.id})" class="btn btn-primary me-1"><i class="fa-sharp fa-solid fa-pen"></i></button>
                                   <button onclick="deleteTrade(${item.id})" class="btn btn-primary me-1"><i class="fa-solid fa-trash"></i></button>
 
@@ -234,10 +226,8 @@
       let data = {
          id: document.getElementById('id').value,
          name: document.getElementById('name').value,
-         amount: document.getElementById('amount').value,
-         date: document.getElementById('date').value,
-         type: document.getElementById('type').value,
-         currentMoney: document.getElementById('currentMoney').value,
+         price: document.getElementById('price').value,
+         mota: document.getElementById('mota').value,
       };
 
 
@@ -259,21 +249,14 @@
                <label for="">Name</label>
                <input type="text" class="form-control" id="name" placeholder="Name">
             </div>
+
             <div class="form-group">
-               <label for="">Amount</label>
-               <input type="text" class="form-control" id="amount" placeholder="Amount">
+               <label for="">Price</label>
+               <input type="text" class="form-control" id="price" placeholder="Giá xe">
             </div>
             <div class="form-group">
-               <label for="">Date</label>
-               <input type="date" class="form-control" id="date" placeholder="Date">
-            </div>
-            <div class="form-group">
-               <label for="">Type</label>
-               <input type="text" class="form-control" id="type" placeholder="Type">
-            </div>
-            <div class="form-group">
-               <label for="">currentMoney</label>
-               <input type="text" class="form-control" id="currentMoney" placeholder="currentMoney">
+               <label for="">Mô tả</label>
+               <input type="text" class="form-control" id="mota" placeholder="Mô tả xe">
             </div>
             <div class="d-flex justify-content-start">
                <button type="button" onclick="save()" class="btn btn-primary mt-4 mr-2">Xác nhận</button>
@@ -294,17 +277,41 @@
       axios.get(API_URL + `/${id}`).then(res => {
          let data = res.data[0];
 
-         let str = ``
+         let str = `
+      <div class="mx-auto card p-4 my-4 w-75 shadow-lg rounded">
+         <h2 class="text-center">Add Transaction</h2>
+         <form>
+            <div class="form-group">
+               <label for="">ID</label>
+               <input type="hidden" class="form-control" id="id" aria-describedby="emailHelp" placeholder="Enter ID">
+            </div>
+            <div class="form-group">
+               <label for="">Name</label>
+               <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+
+            <div class="form-group">
+               <label for="">Price</label>
+               <input type="text" class="form-control" id="price" placeholder="Giá xe">
+            </div>
+            <div class="form-group">
+               <label for="">Mô tả</label>
+               <input type="text" class="form-control" id="mota" placeholder="Mô tả xe">
+            </div>
+            <div class="d-flex justify-content-start">
+               <button type="button" onclick="update()" class="btn btn-primary mt-4 mr-2">Update</button>
+               <button type="button" class="btn btn-secondary mt-4">Thoát</button>
+            </div>
+         </form>
+      </div>`
 
          document.getElementById('display').innerHTML = str;
 
 
          document.getElementById('id').value = data.id;
          document.getElementById("name").value = data.name;
-         document.getElementById("amount").value = data.amount;
-         document.getElementById("date").value = data.date;
-         document.getElementById("type").value = data.type;
-         document.getElementById("currentMoney").value = data.currentMoney;
+         document.getElementById("price").value = data.price;
+         document.getElementById("mota").value = data.mota;
       })
    }
 
@@ -314,11 +321,8 @@
       let data = {
          id: document.getElementById('id').value,
          name: document.getElementById('name').value,
-         amount: document.getElementById('amount').value,
-         date: document.getElementById('date').value,
-         type: document.getElementById('type').value,
-         // currentMoney: document.getElementById('currentMoney').value,
-
+         price: document.getElementById('price').value,
+         mota: document.getElementById('mota').value,
       }
 
 
